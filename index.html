@@ -69,16 +69,6 @@ const API_URL =
  
 function searchRequest() {
 
-  if (!requestId || !email) {
-
-  document
-    .getElementById("results")
-    .innerHTML =
-      "<p>กรุณากรอกรหัสแจ้งซ่อมและอีเมล์</p>";
-
-  return;
-  }
-
   const requestId =
     document
       .getElementById("requestId")
@@ -90,6 +80,16 @@ function searchRequest() {
       .getElementById("email")
       .value
       .trim();
+
+  if (!requestId || !email) {
+
+  document
+    .getElementById("results")
+    .innerHTML =
+      "<p>กรุณากรอกรหัสแจ้งซ่อมและอีเมล์</p>";
+
+  return;
+  }
 
   document
     .getElementById("results")
