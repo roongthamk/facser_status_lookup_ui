@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 15px;
+    }
+
+    input {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<h2>ตรวจสอบสถานะคำขอแจ้งซ่อม</h2>
+<p>CUVET Nakornpathom Center</p>
+
+<input
+  type="text"
+  id="requestId"
+  placeholder="รหัสแจ้งซ่อม (Request ID)"
+  onkeydown="if(event.key==='Enter') searchRequest();">
+
+<br><br>
+
+<input
+  type="email"
+  id="email"
+  placeholder="Authorized Email"
+  onkeydown="if(event.key==='Enter') searchRequest();">
+
+<br><br>
+
+<button onclick="searchRequest()">
+ตรวจสอบสถานะ
+</button>
+
+<div id="results"></div>
+
+  
+<script>
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwbFvpTTdJVVVztsgxB6EQfnbnHEqQSi5thCOfo8bUBw-SH_7ZqHmLoGnmpCJK5Sku2/exec";
+
+function searchRequest() {
+
+  const requestId =
+    document
+      .getElementById("requestId")
+      .value
+      .trim();
+
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
+
+  document
+    .getElementById("results")
+    .innerHTML =
+      "<p>กำลังค้นหา...</p>";
+
+  fetch(
+    API_URL +
+    "?request_id=" +
+    encodeURIComponent(requestId) +
+    "&email=" +
+    encodeURIComponent(email)
+  )
+  .then(res => res.json())
+  .then(data => {
+
+    if (!data.success) {
+
+      document
+        .getElementById("results")
+        .innerHTML =
+          "<p>ไม่พบข้อมูล</p>";
+
+      return;
+
+    }
+
+    document
+      .getElementById("results")
+      .innerHTML =
+
+      "<div class='result'>" +
+
+      "<b>Request ID:</b> " +
+      data.requestId +
+      "<br><br>" +
+
+      "<b>ผู้แจ้ง:</b> " +
+      data.requesterName +
+      "<br><br>" +
+
+      "<b>ชื่อคำขอ:</b> " +
+      data.requestName +
+      "<br><br>" +
+
+      "<b>วันที่แจ้ง:</b> " +
+      data.requestDate +
+      "<br><br>" +
+
+      "<b>รายละเอียด:</b><br>" +
+      data.requestDetail +
+
+      "</div>";
+
+  })
+  .catch(err => {
+
+    console.error(err);
+
+    document
+      .getElementById("results")
+      .innerHTML =
+        "<p>เกิดข้อผิดพลาด</p>";
+
+  });
+
+}
+
+</script>
+
+</body>
+
+</html>
