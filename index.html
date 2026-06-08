@@ -97,14 +97,12 @@ function searchRequest() {
   .then(data => {
 
     if (!data.success) {
-
+      
       document
         .getElementById("results")
-        .innerHTML =
-          "<p>ไม่พบข้อมูล</p>";
-
+        .innerHTML = 
+        "<p>" + data.message + "</p>";
       return;
-
     }
 
     document
